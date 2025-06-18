@@ -112,41 +112,36 @@ function App() {
 
   return (
     <div className="app">
-      <div className="app__header">
-        <h1 className="app__title">Paws & Preferences</h1>
-        <p className="app__subtitle">Find your purrfect match!</p>
-      </div>
-
       <div className={`swipe-view ${!showSummary ? 'visible' : ''}`}>
+        <div className="app__header">
+          <h1 className="app__title">Paws & Preferences</h1>
+          <p className="app__subtitle">Find your purrfect match!</p>
+        </div>
         <div className="app__cardContainer" {...handlers}>
           {isLoading ? (
             <div className='card-placeholder'>Loading cats...</div>
           ) : (
             cats.map((cat, index) => {
-  const isTopCard = index === currentIndex;
-
-  if (!isTopCard) {
-    return null;
-  }
-
-  const cardClass = `card card--${swipeDirection}`;
-  
-  const style = {
-    visibility: cat.url ? 'visible' : 'hidden',
-    backgroundImage: cat.url ? `url(${cat.url})` : 'none',
-  };
-
-  return (
-    <div key={cat.id} className={cardClass} style={style}>
-      {isTopCard && swipeDirection && (
-        <div className={`swipe-feedback ${swipeDirection === 'right' ? 'like' : 'nope'}`}>
-          {swipeDirection === 'right' ? 'LIKE' : 'NOPE'}
-        </div>
-      )}
-      {cat.url && <h3>{cat.name}</h3>}
-    </div>
-  );
-})
+              const isTopCard = index === currentIndex;
+              if (!isTopCard) {
+                return null;
+              }
+              const cardClass = `card card--${swipeDirection}`;
+              const style = {
+                visibility: cat.url ? 'visible' : 'hidden',
+                backgroundImage: cat.url ? `url(${cat.url})` : 'none',
+              };
+              return (
+                <div key={cat.id} className={cardClass} style={style}>
+                  {isTopCard && swipeDirection && (
+                    <div className={`swipe-feedback ${swipeDirection === 'right' ? 'like' : 'nope'}`}>
+                      {swipeDirection === 'right' ? 'LIKE' : 'NOPE'}
+                    </div>
+                  )}
+                  {cat.url && <h3>{cat.name}</h3>}
+                </div>
+              );
+            })
           )}
           {!isLoading && currentIndex < 0 && (<div className='card-placeholder'>All done!</div>)}
         </div>
