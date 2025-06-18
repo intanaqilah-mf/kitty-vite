@@ -46,16 +46,16 @@ function App() {
   }
 }, []);
 useEffect(() => {
-  if (cats.length === 0 || currentIndex < 0) return;
-
-  const currentCat = cats[currentIndex];
-
-  // Jika kad semasa belum mempunyai URL, muat turunnya
-  if (currentCat && !currentCat.url) {
-    const newCats = [...cats];
-    newCats[currentIndex].url = `https://cataas.com/cat/${currentCat.id}`;
-    setCats(newCats);
-  }
+  if (!cats[currentIndex]) return;
+  if (cats[currentIndex].url) return;
+  setCats(prevCats => 
+    prevCats.map((cat, index) => {
+      if (index === currentIndex) {
+        return { ...cat, url: `https://cataas.com/cat/${cat.id}` };
+      }
+      return cat;
+    })
+  );
 
 }, [currentIndex, cats]);
 
