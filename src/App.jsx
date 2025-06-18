@@ -17,10 +17,12 @@ function App() {
 
   const fetchCats = useCallback(async () => {
   setIsLoading(true);
+  let response = null; // Declare response here, making it accessible everywhere in the function
+
   try {
-    const response = await axios.get('https://cataas.com/api/cats?limit=20&tags=cute');
+    response = await axios.get('https://cataas.com/api/cats?limit=20&tags=cute');
     
-    // --- DEBUGGING STEP 1: See the raw data from the API ---
+    // This will help debug the original issue of the empty array
     console.log('Raw response from API:', response.data);
 
     const catData = response.data
@@ -31,14 +33,25 @@ function App() {
         url: `https://cataas.com/cat/${cat._id}`,
       }));
 
-    // --- DEBUGGING STEP 2: See what the data looks like after your filter/map ---
-    console.log('Processed catData:', catData);
-    console.log('Number of cats being set:', catData.length);
+    console.log('Processed catData array:', catData);
+
+    // This warning will tell you if your filter logic is the problem
+    if (catData.length === 0 && response.data.length > 0) {
+      console.warn('Warning: The filtered catData array is empty, but the API returned data. Check if the object properties (like _id) are correct.');
+    }
 
     setCats(catData);
     setCurrentIndex(catData.length - 1);
+
   } catch (error) {
-    console.error("Error fetching cats:", error);
+    console.error("Error during fetchCats execution:", error);
+    
+    // This conditional log is now safe because 'response' is always defined
+    if (response) {
+      console.error('The API response at the time of error was:', response);
+    } else {
+      console.error('The request likely failed before any response was received.');
+    }
   } finally {
     setIsLoading(false);
   }
