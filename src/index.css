@@ -15,10 +15,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --primary-bg: #fdf6f6;      
+  --primary-bg: #B9DCA9;      
   --secondary-bg: #ffffff;     
   --text-primary: #d45d79;     
-  --text-secondary: #4a4a4a;   
+  --text-secondary: #FF9999;   
   --like-color: #89b0ae;      
   --dislike-color: #d45d79;
 }
