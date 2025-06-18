@@ -13,7 +13,6 @@ function App() {
   const [showSummary, setShowSummary] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [likedCats, setLikedCats] = useState([]);
-  console.log('API response →', response.data);
 
   const fetchCats = useCallback(async () => {
   setIsLoading(true);
