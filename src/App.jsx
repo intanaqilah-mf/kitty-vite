@@ -104,28 +104,24 @@ useEffect(() => {
             {isLoading ? (
               <div className='card-placeholder'>Loading cats...</div>
             ) : (
-              // App.jsx (Kod Baharu yang Diperbaiki)
-cats.map((cat, index) => {
-  // --- FIX: Hanya paparkan 3 kad teratas untuk prestasi yang lebih baik ---
+             cats.map((cat, index) => {
   if (index < currentIndex - 2) {
     return null;
   }
 
   const isTopCard = index === currentIndex;
   const cardClass = isTopCard ? `card card--${swipeDirection}` : 'card';
+  
   const style = {
-    // Gunakan cat.url hanya jika ia wujud (untuk lazy loading)
+    visibility: cat.url ? 'visible' : 'hidden',
     backgroundImage: cat.url ? `url(${cat.url})` : 'none',
-    backgroundColor: cat.url ? 'transparent' : '#333', // Latar belakang sementara
     transform: `translateY(${(currentIndex - index) * -10}px) scale(${1 - (currentIndex - index) * 0.05})`,
     zIndex: cats.length - index,
-    // Pastikan hanya kad dalam tindanan yang kelihatan
     opacity: index <= currentIndex ? 1 : 0,
   };
 
   return (
     <div key={cat.id} className={cardClass} style={style}>
-      {/* Hanya tunjukkan nama jika gambar telah dimuat turun */}
       {cat.url && <h3>{cat.name}</h3>}
     </div>
   );
