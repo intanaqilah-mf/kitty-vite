@@ -1,14 +1,14 @@
-/* src/App.css */
 .app {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 400px;
-  height: 100%;
+  max-width: 450px; 
+  min-height: 100vh; 
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
+  justify-content: center;
 }
 
 .app__header {
@@ -124,6 +124,16 @@
   transform: scale(1.1);
   box-shadow: 0 5px 15px 0 rgba(0,0,0,0.2);
 }
+.button--redo {
+  border-radius: 30px; /* Jadikan ia berbentuk pil */
+  width: auto; /* Lebar automatik berdasarkan teks */
+  padding: 15px 30px; /* Beri lebih ruang */
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: var(--text-primary); /* Gunakan warna utama tema */
+  color: white;
+}
 
 .summary {
   display: flex;
@@ -171,6 +181,7 @@
 .summary__card p {
   margin: 10px 0;
   font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 @media (max-width: 600px) {
