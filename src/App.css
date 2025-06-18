@@ -319,20 +319,54 @@
 @media (max-width: 600px) {
   .app {
     padding: 1rem;
+    justify-content: flex-start;
   }
+
   .app__cardContainer {
-    height: 60vh;
-    margin-bottom: 10px;
+    height: 55vh;
+    margin-bottom: 1rem;
   }
+
   .app__title {
     font-size: 2em;
+    line-height: 1.1;
   }
+
+  .app__buttons {
+    margin-top: 1.5rem;
+  }
+
   .button {
     width: 60px;
     height: 60px;
   }
+
   .button--undo {
     width: 45px;
     height: 45px;
+  }
+
+  .summary {
+    justify-content: flex-start;
+    padding-top: 2rem;
+  }
+
+  .summary__grid {
+    height: 60vh;
+    overflow-y: auto;
+    padding-right: 5px;
+  }
+}
+@media (max-width: 375px) {
+  .app__title {
+    font-size: 1.8em; /* Make the title even smaller */
+  }
+  .button {
+    width: 55px; /* Make buttons slightly smaller */
+    height: 55px;
+  }
+  .button--undo {
+    width: 40px;
+    height: 40px;
   }
 }
