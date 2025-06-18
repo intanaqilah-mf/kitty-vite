@@ -85,6 +85,12 @@ useEffect(() => {
     trackMouse: true,
   });
 
+  const handleRedo = useCallback(() => {
+  setShowSummary(false);
+  setLikedCats([]);
+  fetchCats(); // Panggil fetchCats untuk mendapatkan set kucing baharu
+}, [fetchCats]);
+
   useEffect(() => {
     if (!isLoading && cats.length > 0 && currentIndex < 0) {
       setShowSummary(true);
@@ -130,22 +136,30 @@ useEffect(() => {
             {!isLoading && currentIndex < 0 && (<div className='card-placeholder'>All done!</div>)}
           </div>
           <div className="app__buttons">
-            <button onClick={() => handleSwipe('left')} className="button" disabled={isLoading || currentIndex < 0}><X size={30} color="#ec5e6f" /></button>
-            <button onClick={() => handleSwipe('right')} className="button" disabled={isLoading || currentIndex < 0}><Heart size={30} color="#6ee3b4" fill="#6ee3b4" /></button>
-          </div>
+  <button onClick={() => handleSwipe('left')} className="button" disabled={isLoading || currentIndex < 0}>
+    <X size={30} color="var(--dislike-color)" />
+  </button>
+  <button onClick={() => handleSwipe('right')} className="button" disabled={isLoading || currentIndex < 0}>
+    <Heart size={30} color="var(--like-color)" fill="var(--like-color)" />
+  </button>
+</div>
         </>
       ) : (
-        <div className="summary">
-          <h2>Your Favorite Kitties!</h2>
-          <p>You liked {likedCats.length} cat{likedCats.length !== 1 ? 's' : ''}.</p>
-          <div className="summary__grid">
-            {likedCats.map(cat => (
-              <div key={cat.id} className="summary__card">
-                <img src={cat.url} alt={cat.name} /><p>{cat.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        // App.jsx (Kod Baharu dengan Butang Redo)
+<div className="summary">
+  <h2>Your Favorite Kitties!</h2>
+  <p>You liked {likedCats.length} cat{likedCats.length !== 1 ? 's' : ''}.</p>
+  <div className="summary__grid">
+    {likedCats.map(cat => (
+      <div key={cat.id} className="summary__card">
+        <img src={cat.url} alt={cat.name} /><p>{cat.name}</p>
+      </div>
+    ))}
+  </div>
+  <button onClick={handleRedo} className="button button--redo">
+    Swipe Again!
+  </button>
+</div>
       )}
     </div>
   );
