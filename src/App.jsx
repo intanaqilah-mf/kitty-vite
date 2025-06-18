@@ -23,7 +23,7 @@ function App() {
       .map(cat => ({
         id: cat.id,
         name: `Kitty #${cat.id.slice(0, 4)}`,
-        url: `https://cataas.com/cat/${cat.id}`,
+        url: null,
       }));
 
     if (catData.length === 0 && response.data.length > 0) {
@@ -45,6 +45,19 @@ function App() {
     setIsLoading(false);
   }
 }, []);
+useEffect(() => {
+  if (cats.length === 0 || currentIndex < 0) return;
+
+  const currentCat = cats[currentIndex];
+
+  // Jika kad semasa belum mempunyai URL, muat turunnya
+  if (currentCat && !currentCat.url) {
+    const newCats = [...cats];
+    newCats[currentIndex].url = `https://cataas.com/cat/${currentCat.id}`;
+    setCats(newCats);
+  }
+
+}, [currentIndex, cats]);
 
   useEffect(() => {
     fetchCats();
@@ -91,21 +104,32 @@ function App() {
             {isLoading ? (
               <div className='card-placeholder'>Loading cats...</div>
             ) : (
-              cats.map((cat, index) => {
-                const isTopCard = index === currentIndex;
-                const cardClass = isTopCard ? `card card--${swipeDirection}` : 'card';
-                const style = {
-                  backgroundImage: `url(${cat.url})`,
-                  transform: `translateY(${(currentIndex - index) * -10}px) scale(${1 - (currentIndex - index) * 0.05})`,
-                  zIndex: cats.length - index,
-                  opacity: index >= currentIndex ? 1 : 0,
-                };
-                return (
-                  <div key={cat.id} className={cardClass} style={style}>
-                    <h3>{cat.name}</h3>
-                  </div>
-                );
-              })
+              // App.jsx (Kod Baharu yang Diperbaiki)
+cats.map((cat, index) => {
+  // --- FIX: Hanya paparkan 3 kad teratas untuk prestasi yang lebih baik ---
+  if (index < currentIndex - 2) {
+    return null;
+  }
+
+  const isTopCard = index === currentIndex;
+  const cardClass = isTopCard ? `card card--${swipeDirection}` : 'card';
+  const style = {
+    // Gunakan cat.url hanya jika ia wujud (untuk lazy loading)
+    backgroundImage: cat.url ? `url(${cat.url})` : 'none',
+    backgroundColor: cat.url ? 'transparent' : '#333', // Latar belakang sementara
+    transform: `translateY(${(currentIndex - index) * -10}px) scale(${1 - (currentIndex - index) * 0.05})`,
+    zIndex: cats.length - index,
+    // Pastikan hanya kad dalam tindanan yang kelihatan
+    opacity: index <= currentIndex ? 1 : 0,
+  };
+
+  return (
+    <div key={cat.id} className={cardClass} style={style}>
+      {/* Hanya tunjukkan nama jika gambar telah dimuat turun */}
+      {cat.url && <h3>{cat.name}</h3>}
+    </div>
+  );
+})
             )}
             {!isLoading && currentIndex < 0 && (<div className='card-placeholder'>All done!</div>)}
           </div>
