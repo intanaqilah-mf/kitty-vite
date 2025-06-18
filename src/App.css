@@ -324,6 +324,7 @@
 
   .app__cardContainer {
     height: 60vh;
+    width: 90vw;
   }
 
   .app__title,
@@ -349,6 +350,11 @@
   .button--undo {
     width: 45px;
     height: 45px;
+  }
+  .button--redo,
+  .button--share {
+    padding: 12px 24px;
+    font-size: 1rem;
   }
   
   .summary {
@@ -387,6 +393,7 @@
   }
   .app__cardContainer {
     height: 55vh;
+    width: 85vw;
   }
   .button {
     width: 55px;
@@ -407,5 +414,10 @@
   }
   .summary__actions {
     margin-top: 1rem;
+  }
+  .button--redo,
+  .button--share {
+    padding: 10px 20px;
+    font-size: 0.9rem;
   }
 }
