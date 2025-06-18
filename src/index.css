@@ -1,25 +1,20 @@
-/* src/index.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
 :root {
   font-family: 'Poppins', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #f4e8e8;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --primary-bg: #B9DCA9;      
-  --secondary-bg: #ffffff;     
-  --text-primary: #d45d79;     
-  --text-secondary: #E75480;   
-  --like-color: #89b0ae;      
+  --primary-bg: #B9DCA9;
+  --secondary-bg: #ffffff;
+  --text-primary: #d45d79;
+  --text-secondary: #E75480;
+  --like-color: #89b0ae;
   --dislike-color: #d45d79;
 }
 
@@ -27,14 +22,15 @@ body {
   margin: 0;
   display: flex;
   justify-content: center;
-  align-items: center;   
+  align-items: center;
   min-height: 100vh;
-  background-color: var(--primary-bg); 
+  background-color: var(--primary-bg);
   color: var(--text-secondary);
+  overflow: hidden;
 }
+
 #root {
   width: 100%;
   display: flex;
   justify-content: center;
 }
-
