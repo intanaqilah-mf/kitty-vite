@@ -14,6 +14,7 @@ function App() {
   const [lastSwiped, setLastSwiped] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [shareText, setShareText] = useState("Share Favorites");
+  const [isUndoing, setIsUndoing] = useState(false);
 
   const fetchCats = useCallback(async () => {
     setIsLoading(true);
@@ -66,18 +67,20 @@ function App() {
     if (direction === 'right') {
       setLikedCats(prevLiked => [...prevLiked, currentCat]);
     }
-    setTimeout(() => advanceToNextCard(), 300);
+    setTimeout(() => advanceToNextCard(), 500);
   }, [currentIndex, cats, advanceToNextCard]);
 
   const handleUndo = () => {
     if (!lastSwiped) return;
+    setIsUndoing(true);
     const { cat, direction } = lastSwiped;
-    setSwipeDirection(null);
-    setCurrentIndex(prevIndex => prevIndex + 1);
     if (direction === 'right') {
       setLikedCats(prevLiked => prevLiked.filter(likedCat => likedCat.id !== cat.id));
     }
     setLastSwiped(null);
+    setSwipeDirection(null);
+    setCurrentIndex(prevIndex => prevIndex + 1);
+    setTimeout(() => setIsUndoing(false), 50);
   };
 
   const handleShare = () => {
@@ -120,7 +123,7 @@ function App() {
             <div className='card-placeholder'>Loading cats...</div>
           ) : (
             cats.map((cat, index) => {
-              if (index < currentIndex - 2) {
+              if (index < currentIndex - 2 && !isUndoing) {
                 return null;
               }
 
@@ -132,7 +135,7 @@ function App() {
                 backgroundImage: cat.url ? `url(${cat.url})` : 'none',
                 transform: `translateY(${(currentIndex - index) * -10}px) scale(${1 - (currentIndex - index) * 0.05})`,
                 zIndex: cats.length - index,
-                opacity: index <= currentIndex ? 1 : 0,
+                opacity: isUndoing && !isTopCard ? 0 : 1,
               };
 
               return (
