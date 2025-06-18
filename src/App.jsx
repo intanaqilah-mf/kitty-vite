@@ -6,13 +6,16 @@ import './App.css';
 import { Heart, X } from 'lucide-react';
 
 function App() {
+  // --- FIX: Added a dedicated 'isLoading' state for robust loading logic ---
+  const [isLoading, setIsLoading] = useState(true);
   const [cats, setCats] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [showSummary, setShowSummary] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState(null);
-  const [likedCats, setLikedCats] = useState([]); // We will manage this locally for now
+  const [likedCats, setLikedCats] = useState([]);
 
   const fetchCats = useCallback(async () => {
+    setIsLoading(true); // Set loading to true at the start
     try {
       const response = await axios.get('https://cataas.com/api/cats?limit=20&tags=cute');
       const catData = response.data
@@ -26,6 +29,9 @@ function App() {
       setCurrentIndex(catData.length - 1);
     } catch (error) {
       console.error("Error fetching cats:", error);
+    } finally {
+      // --- FIX: This ensures loading is set to false after the fetch is complete, even if there's an error ---
+      setIsLoading(false);
     }
   }, []);
 
@@ -43,7 +49,6 @@ function App() {
     setSwipeDirection(direction);
     const currentCat = cats[currentIndex];
     if (direction === 'right') {
-      // Add the liked cat to our local list
       setLikedCats(prevLiked => [...prevLiked, currentCat]);
       console.log(`You liked ${currentCat.name}`);
     }
@@ -58,22 +63,26 @@ function App() {
   });
 
   useEffect(() => {
-    if (cats.length > 0 && currentIndex < 0) {
+    // Show summary only when loading is done and there are no more cats
+    if (!isLoading && cats.length > 0 && currentIndex < 0) {
       setShowSummary(true);
     }
-  }, [currentIndex, cats.length]);
+  }, [currentIndex, cats.length, isLoading]);
 
   return (
     <div className="app">
       <div className="app__header">
         <h1 className="app__title">Paws & Preferences</h1>
-        <p className="app__subtitle">Find your purrrfect match!</p>
+        <p className="app__subtitle">Find your purrfect match!</p>
       </div>
 
       {!showSummary ? (
         <>
           <div className="app__cardContainer" {...handlers}>
-            {cats.length > 0 ? (
+            {/* --- FIX: The main condition is now 'isLoading' --- */}
+            {isLoading ? (
+              <div className='card-placeholder'>Loading cats...</div>
+            ) : (
               cats.map((cat, index) => {
                 const isTopCard = index === currentIndex;
                 const cardClass = isTopCard ? `card card--${swipeDirection}` : 'card';
@@ -89,18 +98,18 @@ function App() {
                   </div>
                 );
               })
-            ) : (<div className='card-placeholder'>Load cats...</div>)}
-            {cats.length > 0 && currentIndex < 0 && (<div className='card-placeholder'>Selesai!</div>)}
+            )}
+            {!isLoading && currentIndex < 0 && (<div className='card-placeholder'>All done!</div>)}
           </div>
           <div className="app__buttons">
-            <button onClick={() => handleSwipe('left')} className="button" disabled={currentIndex < 0}><X size={30} color="#ec5e6f" /></button>
-            <button onClick={() => handleSwipe('right')} className="button" disabled={currentIndex < 0}><Heart size={30} color="#6ee3b4" fill="#6ee3b4" /></button>
+            <button onClick={() => handleSwipe('left')} className="button" disabled={isLoading || currentIndex < 0}><X size={30} color="#ec5e6f" /></button>
+            <button onClick={() => handleSwipe('right')} className="button" disabled={isLoading || currentIndex < 0}><Heart size={30} color="#6ee3b4" fill="#6ee3b4" /></button>
           </div>
         </>
       ) : (
         <div className="summary">
-          <h2>Your favorite cat!</h2>
-          <p>You have swapped like {likedCats.length} cats.</p>
+          <h2>Your Favorite Kitties!</h2>
+          <p>You liked {likedCats.length} cat{likedCats.length !== 1 ? 's' : ''}.</p>
           <div className="summary__grid">
             {likedCats.map(cat => (
               <div key={cat.id} className="summary__card">
