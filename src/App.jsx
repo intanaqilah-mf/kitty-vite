@@ -20,9 +20,6 @@ function App() {
 
   try {
     response = await axios.get('https://cataas.com/api/cats?limit=20&tags=cute');
-    
-    // This will help debug the original issue of the empty array
-    console.log('Raw response from API:', response.data);
 
     const catData = response.data
       .filter(cat => cat && cat._id)
@@ -31,8 +28,6 @@ function App() {
         name: `Kitty #${cat._id.slice(0, 4)}`,
         url: `https://cataas.com/cat/${cat._id}`,
       }));
-
-    console.log('Processed catData array:', catData);
 
     // This warning will tell you if your filter logic is the problem
     if (catData.length === 0 && response.data.length > 0) {
@@ -71,7 +66,6 @@ function App() {
     const currentCat = cats[currentIndex];
     if (direction === 'right') {
       setLikedCats(prevLiked => [...prevLiked, currentCat]);
-      console.log(`You liked ${currentCat.name}`);
     }
     setTimeout(() => advanceToNextCard(), 300);
   }, [currentIndex, cats, advanceToNextCard]);
