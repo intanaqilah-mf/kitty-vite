@@ -15,12 +15,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --primary-bg: #1a1a2e;
-  --secondary-bg: #16213e;
-  --text-primary: #e94560;
-  --text-secondary: #ffffff;
-  --like-color: #6ee3b4;
-  --dislike-color: #ec5e6f;
+  --primary-bg: #f4e8e8;
+  --secondary-bg: #ffffff;
+  --text-primary: #d45d79;
+  --text-secondary: #4a4a4a;
+  --like-color: #89b0ae;
+  --dislike-color: #d45d79;
 }
 
 body {
