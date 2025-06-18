@@ -123,32 +123,30 @@ function App() {
             <div className='card-placeholder'>Loading cats...</div>
           ) : (
             cats.map((cat, index) => {
-              if (index < currentIndex - 2 && !isUndoing) {
-                return null;
-              }
+  const isTopCard = index === currentIndex;
 
-              const isTopCard = index === currentIndex;
-              const cardClass = isTopCard ? `card card--${swipeDirection}` : 'card';
+  if (!isTopCard) {
+    return null;
+  }
 
-              const style = {
-                visibility: cat.url ? 'visible' : 'hidden',
-                backgroundImage: cat.url ? `url(${cat.url})` : 'none',
-                transform: `translateY(${(currentIndex - index) * -10}px) scale(${1 - (currentIndex - index) * 0.05})`,
-                zIndex: cats.length - index,
-                opacity: isUndoing && !isTopCard ? 0 : 1,
-              };
+  const cardClass = `card card--${swipeDirection}`;
+  
+  const style = {
+    visibility: cat.url ? 'visible' : 'hidden',
+    backgroundImage: cat.url ? `url(${cat.url})` : 'none',
+  };
 
-              return (
-                <div key={cat.id} className={cardClass} style={style}>
-                  {isTopCard && swipeDirection && (
-                    <div className={`swipe-feedback ${swipeDirection === 'right' ? 'like' : 'nope'}`}>
-                      {swipeDirection === 'right' ? 'LIKE' : 'NOPE'}
-                    </div>
-                  )}
-                  {cat.url && <h3>{cat.name}</h3>}
-                </div>
-              );
-            })
+  return (
+    <div key={cat.id} className={cardClass} style={style}>
+      {isTopCard && swipeDirection && (
+        <div className={`swipe-feedback ${swipeDirection === 'right' ? 'like' : 'nope'}`}>
+          {swipeDirection === 'right' ? 'LIKE' : 'NOPE'}
+        </div>
+      )}
+      {cat.url && <h3>{cat.name}</h3>}
+    </div>
+  );
+})
           )}
           {!isLoading && currentIndex < 0 && (<div className='card-placeholder'>All done!</div>)}
         </div>
