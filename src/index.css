@@ -8,18 +8,18 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #f4e8e8;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --primary-bg: #f4e8e8;
-  --secondary-bg: #ffffff;
-  --text-primary: #d45d79;
-  --text-secondary: #4a4a4a;
-  --like-color: #89b0ae;
+  --primary-bg: #fdf6f6;      
+  --secondary-bg: #ffffff;     
+  --text-primary: #d45d79;     
+  --text-secondary: #4a4a4a;   
+  --like-color: #89b0ae;      
   --dislike-color: #d45d79;
 }
 
@@ -29,22 +29,12 @@ body {
   justify-content: center;
   align-items: center;   
   min-height: 100vh;
-  background-color: #242424; 
+  background-color: var(--primary-bg); 
+  color: var(--text-secondary);
 }
 #root {
   width: 100%;
   display: flex;
   justify-content: center;
 }
-.app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 450px; 
-  min-height: 100vh; 
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  justify-content: center;
-}
+
