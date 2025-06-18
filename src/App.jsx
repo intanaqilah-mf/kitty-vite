@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import axios from 'axios';
@@ -6,7 +5,6 @@ import './App.css';
 import { Heart, X } from 'lucide-react';
 
 function App() {
-  // --- FIX: Added a dedicated 'isLoading' state for robust loading logic ---
   const [isLoading, setIsLoading] = useState(true);
   const [cats, setCats] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -16,20 +14,18 @@ function App() {
 
   const fetchCats = useCallback(async () => {
   setIsLoading(true);
-  let response = null; // Declare response here, making it accessible everywhere in the function
-
+  let response = null; 
   try {
     response = await axios.get('https://cataas.com/api/cats?limit=20&tags=cute');
 
     const catData = response.data
-      .filter(cat => cat && cat._id)
+      .filter(cat => cat && cat.id)
       .map(cat => ({
-        id: cat._id,
-        name: `Kitty #${cat._id.slice(0, 4)}`,
-        url: `https://cataas.com/cat/${cat._id}`,
+        id: cat.id,
+        name: `Kitty #${cat.id.slice(0, 4)}`,
+        url: `https://cataas.com/cat/${cat.id}`,
       }));
 
-    // This warning will tell you if your filter logic is the problem
     if (catData.length === 0 && response.data.length > 0) {
       console.warn('Warning: The filtered catData array is empty, but the API returned data. Check if the object properties (like _id) are correct.');
     }
@@ -39,8 +35,7 @@ function App() {
 
   } catch (error) {
     console.error("Error during fetchCats execution:", error);
-    
-    // This conditional log is now safe because 'response' is always defined
+  
     if (response) {
       console.error('The API response at the time of error was:', response);
     } else {
@@ -78,7 +73,6 @@ function App() {
   });
 
   useEffect(() => {
-    // Show summary only when loading is done and there are no more cats
     if (!isLoading && cats.length > 0 && currentIndex < 0) {
       setShowSummary(true);
     }
@@ -94,7 +88,6 @@ function App() {
       {!showSummary ? (
         <>
           <div className="app__cardContainer" {...handlers}>
-            {/* --- FIX: The main condition is now 'isLoading' --- */}
             {isLoading ? (
               <div className='card-placeholder'>Loading cats...</div>
             ) : (
