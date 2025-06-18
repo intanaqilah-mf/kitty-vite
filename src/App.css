@@ -125,14 +125,15 @@
   box-shadow: 0 5px 15px 0 rgba(0,0,0,0.2);
 }
 .button--redo {
-  border-radius: 30px; /* Jadikan ia berbentuk pil */
-  width: auto; /* Lebar automatik berdasarkan teks */
-  padding: 15px 30px; /* Beri lebih ruang */
+  border-radius: 30px;
+  width: auto;
+  padding: 15px 30px;
   margin-top: 2rem;
   font-size: 1.1rem;
   font-weight: 600;
-  background-color: var(--text-primary); /* Gunakan warna utama tema */
-  color: white;
+  background-color: var(--text-primary); 
+  color: var(--secondary-bg); 
+  border: none;
 }
 
 .summary {
