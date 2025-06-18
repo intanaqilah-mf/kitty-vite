@@ -13,27 +13,36 @@ function App() {
   const [showSummary, setShowSummary] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [likedCats, setLikedCats] = useState([]);
+  console.log('API response →', response.data);
 
   const fetchCats = useCallback(async () => {
-    setIsLoading(true); // Set loading to true at the start
-    try {
-      const response = await axios.get('https://cataas.com/api/cats?limit=20&tags=cute');
-      const catData = response.data
-        .filter(cat => cat && cat._id)
-        .map(cat => ({
-          id: cat._id,
-          name: `Kitty #${cat._id.slice(0, 4)}`,
-          url: `https://cataas.com/cat/${cat._id}`,
-        }));
-      setCats(catData);
-      setCurrentIndex(catData.length - 1);
-    } catch (error) {
-      console.error("Error fetching cats:", error);
-    } finally {
-      // --- FIX: This ensures loading is set to false after the fetch is complete, even if there's an error ---
-      setIsLoading(false);
-    }
-  }, []);
+  setIsLoading(true);
+  try {
+    const response = await axios.get('https://cataas.com/api/cats?limit=20&tags=cute');
+    
+    // --- DEBUGGING STEP 1: See the raw data from the API ---
+    console.log('Raw response from API:', response.data);
+
+    const catData = response.data
+      .filter(cat => cat && cat._id)
+      .map(cat => ({
+        id: cat._id,
+        name: `Kitty #${cat._id.slice(0, 4)}`,
+        url: `https://cataas.com/cat/${cat._id}`,
+      }));
+
+    // --- DEBUGGING STEP 2: See what the data looks like after your filter/map ---
+    console.log('Processed catData:', catData);
+    console.log('Number of cats being set:', catData.length);
+
+    setCats(catData);
+    setCurrentIndex(catData.length - 1);
+  } catch (error) {
+    console.error("Error fetching cats:", error);
+  } finally {
+    setIsLoading(false);
+  }
+}, []);
 
   useEffect(() => {
     fetchCats();
